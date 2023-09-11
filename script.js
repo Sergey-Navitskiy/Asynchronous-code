@@ -18,8 +18,12 @@ function getCountryDAta(country) {
           <h3 class="country__name">${data.name.common}</h3>
           <h4 class="country__region">${data.region}</h4>
           <p class="country__row"><span>👫</span>${data.population}</p>
-          <p class="country__row"><span>🗣️</span>${data.languages.rus}</p>
-          <p class="country__row"><span>💰</span>${data.currencies.RUB.name}</p>
+          <p class="country__row"><span>🗣️</span>${
+            Object.entries(data.languages)[0][1]
+          }</p>
+          <p class="country__row"><span>💰</span>${
+            Object.entries(Object.entries(data.currencies)[0][1])[0][1]
+          } </p>
         </div>
       </article>`;
 
@@ -27,5 +31,5 @@ function getCountryDAta(country) {
     countriesContainer.style.opacity = 1;
   });
 }
-getCountryDAta('russia  ')
+getCountryDAta("usa");
 console.log("hello world");
