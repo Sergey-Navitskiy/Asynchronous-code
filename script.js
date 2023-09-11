@@ -32,4 +32,5 @@ function getCountryDAta(country) {
   });
 }
 getCountryDAta("usa");
+getCountryDAta("germany");
 console.log("hello world");
