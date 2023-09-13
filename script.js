@@ -9,10 +9,9 @@ function getCountryDAta(country) {
   requst.open("GET", `https://restcountries.com/v3.1/name/${country}`);
   requst.send();
 
-  requst.addEventListener("load", function () {
-    const [data] = JSON.parse(this.responseText);
-    console.log(data);
-    const html = `<article class="country">
+
+  function renderCards(data, className = ''){
+    const html = `<article class="country ${className}">
         <img class="country__img" src="${data.flags.svg}" />
         <div class="country__data">
           <h3 class="country__name">${data.name.common}</h3>
@@ -29,8 +28,23 @@ function getCountryDAta(country) {
 
     countriesContainer.insertAdjacentHTML("beforeend", html);
     countriesContainer.style.opacity = 1;
+  }
+
+
+  requst.addEventListener("load", function () {
+    const [data] = JSON.parse(this.responseText);
+    console.log(data);
+    const neibhour = data.borders[0]
+    renderCards(data)
+
+    const request2 = new XMLHttpRequest()
+    request2.open('GET', `https://restcountries.com/v3.1/alpha/${neibhour}`)
+    request2.send()
+    request2.addEventListener('load', function(){
+      const [data2] = JSON.parse(this.responseText);
+      renderCards(data2,'neighbour')
+    })
   });
 }
 getCountryDAta("usa");
-getCountryDAta("germany");
 console.log("hello world");
