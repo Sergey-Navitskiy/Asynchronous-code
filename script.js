@@ -73,3 +73,5 @@ function getCountryDAta(country) {
     .then((response) => response.json())
     .then((data) => renderCards(data[0]));
 }
+
+getCountryDAta('russia')
