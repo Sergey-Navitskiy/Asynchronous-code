@@ -48,6 +48,7 @@ const countriesContainer = document.querySelector(".countries");
 // console.log("hello world");
 
 // fetch
+// создание карточки
 
 function renderCards(data, className = "") {
   const html = `<article class="country ${className}">
@@ -67,11 +68,24 @@ function renderCards(data, className = "") {
   countriesContainer.insertAdjacentHTML("beforeend", html);
   countriesContainer.style.opacity = 1;
 }
-
+// получение информации из API при помощи fetch
 function getCountryDAta(country) {
   const req = fetch(`https://restcountries.com/v3.1/name/${country}`)
     .then((response) => response.json())
-    .then((data) => renderCards(data[0]));
+    .then(function (data) {
+      renderCards(data[0]);
+      const neibhour = data[0].borders[0];
+
+      // страна сосед
+      return fetch(`https://restcountries.com/v3.1/alpha/${neibhour}`).then(
+        function (response) {
+          return response.json();
+        }
+      ).then(function(data){
+        const [res] = data
+        renderCards(res, 'neighbour')
+      });
+    });
 }
 
-getCountryDAta('russia')
+getCountryDAta("russia");
