@@ -69,47 +69,86 @@ function renderCards(data, className = "") {
   countriesContainer.style.opacity = 1;
 }
 
-
-
-function renderError(message){
-  countriesContainer.insertAdjacentText('beforeend', message)
-  countriesContainer.style.opacity = 1
+function renderError(message) {
+  countriesContainer.insertAdjacentText("beforeend", message);
+  countriesContainer.style.opacity = 1;
 }
 
 // получение информации из API при помощи fetch
 function getCountryDAta(country) {
-  const req = fetch(`https://restcountries.com/v3.1/name/${country}`)
 
-
-    req.then(function (response) {
-      response.json();
-      
-      if(!response.ok){
-        throw new Error(`страна не найдена (${response.status})`)
+  function getJSON(url, errorMsg = "Что то пошло не так.") {
+    return fetch(url).then(function (response) {
+      if (!response.ok) {
+        throw new Error(`${errorMsg}(${response.status})`);
       }
-    })
+      return response.json();
+    });
+  }
+
+  const request = fetch(`https://restcountries.com/v3.1/name/${country}`);
+
+  getJSON(`https://restcountries.com/v3.1/name/${country}`, "Cтрана не найдена")
     .then(function (data) {
       renderCards(data[0]);
-      const neibhour = data[0].borders[0];
-
-      // страна сосед
-      return fetch(`https://restcountries.com/v3.1/alpha/${neibhour}`)
-        .then(function (response) {
-          return response.json();
-        }, function(err){
-
-        })
-        .then(function (data) {
-          const [res] = data;
-          renderCards(res, "neighbour");
-        });
-    }).catch(function(err){
-      renderError(`что-то пошло не так из-за ошибки ${err.message}. попробуйте позже`)
-    }).finally(function(){
-      countriesContainer.style.opacity = 1
+      const neighbour = data[0].borders;
+      // const neighbour = "dsgfsdgsdg";
+      if (!neighbour) {
+        throw new Error("Не найдено соседей");
+      }
+      //Страна сосед
+      return getJSON(
+        `https://restcountries.com/v3.1/alpha/${neighbour}`,
+        "Cтрана не найдена"
+      ).then(function (data) {
+        const [res] = data;
+        renderCards(res, "neighbour");
+      });
+    })
+    .catch(function (err) {
+      console.log(err);
+      renderError(`Что то пошло не так из за ошибки: ${err.message}`);
+    })
+    .finally(function () {
+      countriesContainer.style.opacity = 1;
     });
 }
 
 btn.addEventListener("click", function () {
   getCountryDAta("usa");
 });
+
+//обработка ошибок
+
+//   const req = fetch(`https://restcountries.com/v3.1/name/${country}`)
+
+//     req.then()
+//     .then(function (data) {
+//       renderCards(data[0]);
+//       const neibhour = data[0].borders[0];
+
+//       // страна сосед
+//       return fetch(`https://restcountries.com/v3.1/alpha/${neibhour}`)
+
+//         .then(function (response) {
+//           if(!response.ok){
+//             throw new Error(`страна не найдена (${response.status})`)
+//           }
+//           return response.json();
+//         })
+
+//         .then(function (data) {
+//           const [res] = data;
+//           renderCards(res, "neighbour");
+//         });
+
+//     }).catch(function(err){
+//       renderError(`что-то пошло не так из-за ошибки ${err.message}. попробуйте позже`)
+//     }).finally(function(){
+//       countriesContainer.style.opacity = 1
+//     });
+// }
+
+// btn.addEventListener("click", function () {
+//   getCountryDAta("usa");
+// });
