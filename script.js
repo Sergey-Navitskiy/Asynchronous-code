@@ -79,8 +79,14 @@ function renderError(message){
 // получение информации из API при помощи fetch
 function getCountryDAta(country) {
   const req = fetch(`https://restcountries.com/v3.1/name/${country}`)
-    .then(function (response) {
+
+
+    req.then(function (response) {
       response.json();
+      
+      if(!response.ok){
+        throw new Error(`страна не найдена (${response.status})`)
+      }
     })
     .then(function (data) {
       renderCards(data[0]);
