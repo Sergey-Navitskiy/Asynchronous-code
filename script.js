@@ -68,24 +68,42 @@ function renderCards(data, className = "") {
   countriesContainer.insertAdjacentHTML("beforeend", html);
   countriesContainer.style.opacity = 1;
 }
+
+
+
+function renderError(message){
+  countriesContainer.insertAdjacentText('beforeend', message)
+  countriesContainer.style.opacity = 1
+}
+
 // получение информации из API при помощи fetch
 function getCountryDAta(country) {
   const req = fetch(`https://restcountries.com/v3.1/name/${country}`)
-    .then((response) => response.json())
+    .then(function (response) {
+      response.json();
+    })
     .then(function (data) {
       renderCards(data[0]);
       const neibhour = data[0].borders[0];
 
       // страна сосед
-      return fetch(`https://restcountries.com/v3.1/alpha/${neibhour}`).then(
-        function (response) {
+      return fetch(`https://restcountries.com/v3.1/alpha/${neibhour}`)
+        .then(function (response) {
           return response.json();
-        }
-      ).then(function(data){
-        const [res] = data
-        renderCards(res, 'neighbour')
-      });
+        }, function(err){
+
+        })
+        .then(function (data) {
+          const [res] = data;
+          renderCards(res, "neighbour");
+        });
+    }).catch(function(err){
+      renderError(`что-то пошло не так из-за ошибки ${err.message}. попробуйте позже`)
+    }).finally(function(){
+      countriesContainer.style.opacity = 1
     });
 }
 
-getCountryDAta("russia");
+btn.addEventListener("click", function () {
+  getCountryDAta("usa");
+});
