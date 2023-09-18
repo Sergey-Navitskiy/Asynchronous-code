@@ -116,6 +116,10 @@ function getCountryDAta(country) {
 
 btn.addEventListener("click", function () {
   getCountryDAta("usa");
+
+  fetch(...).then(function(rpom){
+    return console.log(rpom)
+  })
 });
 
 //обработка ошибок
