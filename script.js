@@ -76,7 +76,6 @@ function renderError(message) {
 
 // получение информации из API при помощи fetch
 function getCountryDAta(country) {
-
   function getJSON(url, errorMsg = "Что то пошло не так.") {
     return fetch(url).then(function (response) {
       if (!response.ok) {
@@ -91,11 +90,14 @@ function getCountryDAta(country) {
   getJSON(`https://restcountries.com/v3.1/name/${country}`, "Cтрана не найдена")
     .then(function (data) {
       renderCards(data[0]);
-      const neighbour = data[0].borders;
+      console.log(data[0]);
+      const neighbour = data[0].borders[0];
       // const neighbour = "dsgfsdgsdg";
+      console.log(neighbour);
       if (!neighbour) {
         throw new Error("Не найдено соседей");
       }
+
       //Страна сосед
       return getJSON(
         `https://restcountries.com/v3.1/alpha/${neighbour}`,
@@ -115,12 +117,43 @@ function getCountryDAta(country) {
 }
 
 btn.addEventListener("click", function () {
-  getCountryDAta("usa");
-
-  fetch(...).then(function(rpom){
-    return console.log(rpom)
-  })
+  getCountryDAta("france");
 });
+
+navigator.geolocation.getCurrentPosition(
+  function (pos) {
+    const [latitude, longitude] = pos.coords;
+
+    fetch(
+      `https://geocode.xyz/${latitude},${longitude}?geoit=json&auth=442426570626257657862x66288`
+    )
+      .then(function (response) {
+        return response.json();
+      })
+      .then(function (result) {
+        const country = result.country;
+        return fetch(`https://restcountries.com/v3.1/name/${country}`);
+      })
+      .then(function (response) {
+        if (!response.ok) {
+          throw new Error(`Что-то не так(${response.status})`);
+        }
+        response.json();
+      })
+      .then(function (data) {
+        renderCards(data);
+      })
+      .finally(function () {
+        countriesContainer.style.opacity = 1;
+      });
+  },
+  function () {
+    alert("Вы не предоставили свою гео-локацию");
+  }
+);
+
+
+
 
 //обработка ошибок
 
