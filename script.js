@@ -116,44 +116,48 @@ function getCountryDAta(country) {
     });
 }
 
-btn.addEventListener("click", function () {
-  getCountryDAta("france");
-});
-
 navigator.geolocation.getCurrentPosition(
   function (pos) {
-    const [latitude, longitude] = pos.coords;
+    console.log(pos);
+    const { latitude, longitude } = pos.coords;
 
     fetch(
-      `https://geocode.xyz/${latitude},${longitude}?geoit=json&auth=442426570626257657862x66288`
+      `https://script.google.com/macros/s/AKfycbyzDYhjzdytjxFrMVwLjNYRY7WxjgRhShVI9_JunYRru25HHmN5tcJ7caRrO2m812P4dw/exec?cor1=${latitude}&cor2=${longitude}`
     )
       .then(function (response) {
         return response.json();
       })
       .then(function (result) {
         const country = result.country;
+        console.log(result);
         return fetch(`https://restcountries.com/v3.1/name/${country}`);
       })
       .then(function (response) {
         if (!response.ok) {
-          throw new Error(`Что-то не так(${response.status})`);
+          throw new Error(`Что то пошло не так(${response.status})`);
         }
-        response.json();
+        return response.json();
       })
       .then(function (data) {
-        renderCards(data);
+        console.log(data);
+        renderCards(data[0]);
+      })
+      .catch(function (err) {
+        console.log(err);
+        renderError(`Что то пошло не так из за ошибки: ${err.message}`);
       })
       .finally(function () {
         countriesContainer.style.opacity = 1;
       });
   },
   function () {
-    alert("Вы не предоставили свою гео-локацию");
+    alert("Вы не передали свою гео-позицию");
   }
 );
 
-
-
+btn.addEventListener("click", function () {
+  getCountryDAta("france");
+});
 
 //обработка ошибок
 
@@ -189,3 +193,5 @@ navigator.geolocation.getCurrentPosition(
 // btn.addEventListener("click", function () {
 //   getCountryDAta("usa");
 // });
+
+
