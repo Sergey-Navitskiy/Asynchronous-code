@@ -194,4 +194,38 @@ btn.addEventListener("click", function () {
 //   getCountryDAta("usa");
 // });
 
+const lotteryTicket = new Promise(function (resolve, reject) {
+  setTimeout(function () {
+    if (Math.random() >= 0.5) {
+      resolve("Win");
+    } else {
+      reject("Lose");
+    }
+  }, 2000);
+});
 
+lotteryTicket
+  .then(function (res) {
+    console.log(res);
+  })
+  .catch(function (err) {
+    console.error(err);
+  });
+
+
+  function wait(sec){
+    return new Promise(function(resolve){
+      setTimeout(resolve, sec * 1000)
+    })
+  }
+
+  wait(2).then(function(){
+    console.log('ВЫ ждали 2сек')
+    return wait(1)
+  }).then(function(){
+    console.log('Вы ждали ещё 1 секунду')
+    return wait(1)
+  }).then(function(){
+    console.log('ur waitong 1 sec')
+    return wait(1)
+  })
