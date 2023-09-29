@@ -212,26 +212,27 @@ lotteryTicket
     console.error(err);
   });
 
+function wait(sec) {
+  return new Promise(function (resolve) {
+    setTimeout(resolve, sec * 1000);
+  });
+}
 
-  function wait(sec){
-    return new Promise(function(resolve){
-      setTimeout(resolve, sec * 1000)
-    })
-  }
-
-  wait(2).then(function(){
-    console.log('ВЫ ждали 2сек')
-    return wait(1)
-  }).then(function(){
-    console.log('Вы ждали ещё 1 секунду')
-    return wait(1)
-  }).then(function(){
-    console.log('ur waitong 1 sec')
-    return wait(1)
+wait(2)
+  .then(function () {
+    console.log("ВЫ ждали 2сек");
+    return wait(1);
   })
+  .then(function () {
+    console.log("Вы ждали ещё 1 секунду");
+    return wait(1);
+  })
+  .then(function () {
+    console.log("ur waitong 1 sec");
+    return wait(1);
+  });
 
 // очереди выполнения кода
-
 
 // console.log('test stert')
 // setTimeout(function(){
@@ -248,7 +249,6 @@ lotteryTicket
 // })
 // console.log('test end')
 
-
 // промисификация геолокации из практики
 
 // new Promise(function(result,reject){
@@ -257,36 +257,64 @@ lotteryTicket
 //   console.log(data)
 // })
 
-
 // async/ await
 
-async function getCountry(country){
-  try{
-  const res = await fetch(`https://restcountries.com/v3.1/name/${country}`
-)
-if(!res.ok){
-  throw new Error('у вас нет инета')
-}
-const data = await res.json()
-return `Ваша страна ${data[0].name.common}`
+// async function getCountry(country){
+//   try{
+//   const res = await fetch(`https://restcountries.com/v3.1/name/${country}`
+// )
+// if(!res.ok){
+//   throw new Error('у вас нет инета')
+// }
+// const data = await res.json()
+// return `Ваша страна ${data[0].name.common}`
 
+//   } catch(err){
+//     console.log(err)
+//     throw new Error('Что-то пошло не так')
+//   }
+// }
+
+// getCountry('usa').then(function(response){
+//   console.log(response)
+// }).catch(function(err){
+//   console.log(err)
+// })
+
+// (async function(){
+//   try{
+//     const cuckold =  await getCountry('usa')
+//   } catch(err){
+//     console.log(err)
+//   }
+// })
+
+async function getCapital(s1, s2, s3) {
+  try{
+    // const res1 = await fetch(`https://restcountries.com/v3.1/name/${s1}`)
+    // const [data1] = await res1.json()
+
+    // const res2 = await fetch(`https://restcountries.com/v3.1/name/${s2}`)
+    // const [data2] = await res2.json()
+
+    // const res3 = await fetch(`https://restcountries.com/v3.1/name/${s3}`)
+    // const [data3] = await res3.json()
+
+    const data = await Promise.all([
+      fetch(`https://restcountries.com/v3.1/name/${s1}`).then(function(resp){
+        return resp.json()
+      }),
+      fetch(`https://restcountries.com/v3.1/name/${s2}`).then(function(resp){
+        return resp.json()
+      }),
+      fetch(`https://restcountries.com/v3.1/name/${s3}`).then(function(resp){
+        return resp.json()
+      })
+    ])
+    console.log(data.map(function(val){
+      return val[0].capital
+    }))
   } catch(err){
-    console.log(err)
-    throw new Error('Что-то пошло не так')
+
   }
 }
-
-getCountry('usa').then(function(response){
-  console.log(response)
-}).catch(function(err){
-  console.log(err)
-})
-
-
-(async function(){
-  try{
-    const cuckold =  await getCountry('usa')
-  } catch(err){
-    console.log(err)
-  }
-})
