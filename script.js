@@ -256,3 +256,14 @@ lotteryTicket
 // }).then(function(data){
 //   console.log(data)
 // })
+
+
+// async/ await
+
+// async function getCountry(country){
+//   const res = await fetch(`https://script.google.com/macros/s/AKfycbyzDYhjzdytjxFrMVwLjNYRY7WxjgRhShVI9_JunYRru25HHmN5tcJ7caRrO2m812P4dw/exec?cor1=${latitude}&cor2=${longitude}`
+// )
+// const data = await res.json()
+// console.log(res)
+// console.log(data)
+// }
