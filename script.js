@@ -229,3 +229,19 @@ lotteryTicket
     console.log('ur waitong 1 sec')
     return wait(1)
   })
+
+
+console.log('test stert')
+setTimeout(function(){
+  console.log('0sec timer')
+},0)
+Promise.resolve('resolved promise 1').then(function(res){
+  console.log(res)
+})
+
+Promise.resolve('resolved promise 2').then(function(res){
+  for(let i; i < 1000000; i++){
+    console.log(res)
+  }
+})
+console.log('test end')
