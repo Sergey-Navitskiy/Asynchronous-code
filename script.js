@@ -318,3 +318,38 @@ async function getCapital(s1, s2, s3) {
 
   }
 }
+
+
+(async function(){
+  const result = await Promise.race([
+    fetch(`https://restcountries.com/v3.1/name/${s1}`).then(function(resp){
+      return resp.json()
+    }),
+    fetch(`https://restcountries.com/v3.1/name/${s2}`).then(function(resp){
+      return resp.json()
+    }),
+    fetch(`https://restcountries.com/v3.1/name/${s3}`).then(function(resp){
+      return resp.json()
+    })
+  ])
+})
+
+
+function timeout(sec){
+  return Promise(function(_,reject){
+    setTimeout(function(){
+      reject(new Error(`Ожиданние превысилося${sec}`))
+    }, sec * 1000 )
+  })
+}
+
+Promise.race([
+  fetch(`https://restcountries.com/v3.1/name/${s1}`).then(function(resp){
+      return resp.json()
+    }),
+    timeout(1)
+]).then(function(result){
+  console.log(result)
+}).catch(function(err){
+  console.log(err)
+})
