@@ -230,18 +230,29 @@ lotteryTicket
     return wait(1)
   })
 
+// очереди выполнения кода
 
-console.log('test stert')
-setTimeout(function(){
-  console.log('0sec timer')
-},0)
-Promise.resolve('resolved promise 1').then(function(res){
-  console.log(res)
-})
 
-Promise.resolve('resolved promise 2').then(function(res){
-  for(let i; i < 1000000; i++){
-    console.log(res)
-  }
-})
-console.log('test end')
+// console.log('test stert')
+// setTimeout(function(){
+//   console.log('0sec timer')
+// },0)
+// Promise.resolve('resolved promise 1').then(function(res){
+//   console.log(res)
+// })
+
+// Promise.resolve('resolved promise 2').then(function(res){
+//   for(let i; i < 1000000; i++){
+//     console.log(res)
+//   }
+// })
+// console.log('test end')
+
+
+// промисификация геолокации из практики
+
+// new Promise(function(result,reject){
+//   navigator.geolocation.getCurrentPosition(result,reject)
+// }).then(function(data){
+//   console.log(data)
+// })
