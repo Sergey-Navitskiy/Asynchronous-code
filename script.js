@@ -286,5 +286,7 @@ getCountry('usa').then(function(response){
 (async function(){
   try{
     const cuckold =  await getCountry('usa')
+  } catch(err){
+    console.log(err)
   }
 })
