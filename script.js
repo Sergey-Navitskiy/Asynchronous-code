@@ -260,10 +260,31 @@ lotteryTicket
 
 // async/ await
 
-// async function getCountry(country){
-//   const res = await fetch(`https://script.google.com/macros/s/AKfycbyzDYhjzdytjxFrMVwLjNYRY7WxjgRhShVI9_JunYRru25HHmN5tcJ7caRrO2m812P4dw/exec?cor1=${latitude}&cor2=${longitude}`
-// )
-// const data = await res.json()
-// console.log(res)
-// console.log(data)
-// }
+async function getCountry(country){
+  try{
+  const res = await fetch(`https://restcountries.com/v3.1/name/${country}`
+)
+if(!res.ok){
+  throw new Error('у вас нет инета')
+}
+const data = await res.json()
+return `Ваша страна ${data[0].name.common}`
+
+  } catch(err){
+    console.log(err)
+    throw new Error('Что-то пошло не так')
+  }
+}
+
+getCountry('usa').then(function(response){
+  console.log(response)
+}).catch(function(err){
+  console.log(err)
+})
+
+
+(async function(){
+  try{
+    const cuckold =  await getCountry('usa')
+  }
+})
